@@ -1,0 +1,244 @@
+/* ── Variables ──────────────────────────────────────────────── */
+:root {
+  --bg: #0c0c0d;
+  --surface: #141416;
+  --border: #222226;
+  --border-focus: #3a3a42;
+  --accent: #e8ff47;
+  --accent-dim: rgba(232, 255, 71, 0.08);
+  --accent-dim-hover: rgba(232, 255, 71, 0.14);
+  --danger: #ff4d4d;
+  --danger-dim: rgba(255, 77, 77, 0.1);
+  --text-primary: #f0f0ee;
+  --text-muted: #555560;
+  --text-index: #2a2a30;
+  --font-display: "Syne", sans-serif;
+  --font-mono: "DM Mono", monospace;
+  --radius: 2px;
+  --transition: 180ms ease;
+}
+ 
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+ 
+/* ── Layout ─────────────────────────────────────────────────── */
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 72px 24px 120px;
+}
+ 
+.app {
+  width: 100%;
+  max-width: 680px;
+  animation: fadeUp 0.45s ease both;
+}
+ 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* ── Header ─────────────────────────────────────────────────── */
+.app__header { margin-bottom: 48px; }
+ 
+.app__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+ 
+.app__title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+ 
+.app__title span { color: var(--accent); }
+ 
+.app__meta {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app__meta::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--border);
+}
+ 
+/* ── Add Form ───────────────────────────────────────────────── */
+.add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+ 
+.add-form__input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+ 
+.add-form__input::placeholder { color: var(--text-muted); }
+ 
+.add-form__input:focus {
+  border-color: var(--border-focus);
+  background: #18181b;
+}
+ 
+.add-form__btn {
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  color: #0c0c0d;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 12px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--transition), transform var(--transition);
+}
+ 
+.add-form__btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.add-form__btn:active { transform: translateY(0); }
+.add-form__btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+ 
+/* ── Empty state ────────────────────────────────────────────── */
+.todo-empty {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-style: italic;
+}
+ 
+/* ── Todo List ──────────────────────────────────────────────── */
+.todo-list {
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+ 
+/* ── Todo Item ──────────────────────────────────────────────── */
+.todo-item {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--transition);
+ 
+  /* entrance animation driven by CSS custom property set inline */
+  animation: slideIn 0.35s calc(var(--delay, 0ms)) ease both;
+}
+ 
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+ 
+.todo-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent-dim);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+ 
+.todo-item:hover::before { opacity: 1; }
+ 
+.todo-item__index {
+  font-size: 11px;
+  color: var(--text-index);
+  letter-spacing: 0.05em;
+  padding-left: 2px;
+  transition: color var(--transition);
+}
+.todo-item:hover .todo-item__index { color: var(--accent); }
+ 
+.todo-item__title {
+  font-size: 15px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+ 
+/* Delete button */
+.todo-item__delete {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition), color var(--transition),
+              border-color var(--transition), background var(--transition);
+}
+ 
+.todo-item:hover .todo-item__delete { opacity: 1; }
+ 
+.todo-item__delete:hover {
+  color: var(--danger);
+  border-color: rgba(255, 77, 77, 0.3);
+  background: var(--danger-dim);
+}
+ 
+/* ── Footer ─────────────────────────────────────────────────── */
+.app__footer {
+  margin-top: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+ 
+.app__footer-badge {
+  background: var(--accent-dim-hover);
+  border: 1px solid rgba(232, 255, 71, 0.18);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
