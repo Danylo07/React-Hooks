@@ -1,0 +1,30 @@
+/**
+ * TodoItem — відображає одну задачу + кнопку видалення.
+ *
+ * Props:
+ *   task     {Object}   — { id, title }
+ *   index    {number}   — порядковий номер
+ *   onDelete {Function} — callback (id: number) => void
+ */
+function TodoItem({ task, index, onDelete }) {
+  const displayIndex = String(index + 1).padStart(2, "0");
+
+  return (
+    <li
+      className="todo-item"
+      style={{ "--delay": `${Math.min(index * 40, 320)}ms` }}
+    >
+      <span className="todo-item__index">{displayIndex}</span>
+      <span className="todo-item__title">{task.title}</span>
+      <button
+        className="todo-item__delete"
+        onClick={() => onDelete(task.id)}
+        aria-label={`Видалити задачу: ${task.title}`}
+      >
+        rm
+      </button>
+    </li>
+  );
+}
+
+export default TodoItem;
